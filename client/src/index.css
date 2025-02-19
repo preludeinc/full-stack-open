@@ -1,0 +1,25 @@
+body{
+    text-align: left;
+}
+
+li {
+    list-style-type: none;
+    color: grey;
+    padding-top: 3px;
+    font-size: 15px;
+}
+
+h1 {
+    color: green;
+    font-style: italic;
+}
+
+.error {
+    color: red;
+    background: lightgray;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
