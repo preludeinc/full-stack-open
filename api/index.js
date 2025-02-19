@@ -45,7 +45,9 @@ const generateId = () => {
     // const maxId = people.length > 0
     // ? Math.max(...people.map(p => Number(p.id)))
     // : 0
-    return String(Math.floor(Math.random() * 1000))
+    const maxId = people.length > 0
+    const id = maxId ? people.length + 1 : 0
+    return String(id)
 }
 
 app.get('/info', (req, res) => {

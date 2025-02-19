@@ -43,16 +43,15 @@ const App = () => {
   const handleDelete = (id: any) => {
     personService
       .remove(id)
-      .then((response: { data: any}) => {
-        setPersons(response.data)
-        setErrorMessage('Removed ' + response.data.name)
-
-      personService
-        .getAll()
-          .then((response: { data: any }) => {
-            setPersons(response.data)
-          })
-      });
+      .then((response: { data: any }) => {
+        const updatedPersons = persons.filter((person: any) => person.id !== id)
+        if (updatedPersons) {
+          setPersons(updatedPersons)
+          setErrorMessage('Removed ' + response.data.name)
+        } else {
+          setErrorMessage('Error removing person')
+        }
+      })
   }
 
 
