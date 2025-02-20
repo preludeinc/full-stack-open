@@ -66,6 +66,7 @@ const App = () => {
   }
 
   const handleDelete = (id: any, name: any) => {
+    console.log(id)
     personService
       .remove(id)
       .then(() => {
