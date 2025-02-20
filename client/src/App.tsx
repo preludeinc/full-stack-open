@@ -22,6 +22,12 @@ const App = () => {
       })
   }, [])
 
+  const parseErrordata = (error: any) => {
+	let errorData = error.match(/<pre>([\s\S]*?)<\/pre>/i)[1]
+	let validationError = errorData.split('<br>')[0]
+	return validationError.replace('ValidationError:', '')
+  }
+
   const addPerson = (event: any) => {
     event.preventDefault()
 
@@ -39,6 +45,10 @@ const App = () => {
         .then(() => {
           setErrorMessage('Updated ' + updatePerson.name)
         })
+		.catch(error => {
+			let errorText = parseErrordata(error.response.data.error)
+			setErrorMessage(errorText)
+		  })
     } else {
       personService
       .create(personObject)
@@ -48,6 +58,10 @@ const App = () => {
         setPersons(persons.concat(response.data))
         setErrorMessage('Added ' + `${personObject.name}`)
       })
+	  .catch(error => {
+		let errorText = parseErrordata(error.response.data)
+		setErrorMessage(errorText)
+	  })
     }
   }
 
@@ -63,6 +77,9 @@ const App = () => {
           setErrorMessage('Error removing ' + name)
         }
       })
+	  .catch(error => {
+		console.error(error.message)
+	  })
   }
 
   const handleFilter = (event: any) => {
