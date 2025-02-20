@@ -54,22 +54,29 @@ app.get('/api/people/:id', (req, res) => {
     })
 })
 
-app.put('/api/people/:id', (req, res) => {
-    const id = req.params.id
-    const body = req.body
-
-    if (id in people) {
-        const updatePerson = {
-            id: id,
+app.put('/api/people/:id', async (req, res) => {
+    try {
+        const body = req.body
+        if (body.name === undefined || body.number === undefined) {
+            return res.status(400).json({ error: 'content missing'})
+        }
+    
+        const updatePerson = await Person.findByIdAndUpdate(
+            req.params.id, {
             name: body.name,
             number: body.number
-        }
-        res.json(updatePerson)
-        people[id] = updatePerson
+        })
 
-    } else {
-        return res.status(404).json({
-            error: 'person not found'
+        if (!updatePerson ) {
+            return res.status(404).json({
+                error: 'person not found'
+            })
+        }
+        res.status(201).json(updatePerson)
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).json({
+            error: 'server error'
         })
     }
 })
@@ -77,7 +84,7 @@ app.put('/api/people/:id', (req, res) => {
 app.post('/api/people', (req, res) => {
     const body = req.body
 
-    if (body.content === undefined) {
+    if (body.name === undefined || body.number === undefined) {
         return res.status(400).json({ error: 'content missing'})
     }
 
@@ -87,14 +94,27 @@ app.post('/api/people', (req, res) => {
     })
 
     person.save().then(savedPerson => {
-        response.json(savedperson)
+        res.json(savedPerson)
     })
 })
 
-app.delete('/api/people/:id', (req, res) => {
-    const id = req.params.id
-    people = people.filter(person => person.id !== id)
-    res.status(204).end()
+app.delete('/api/people/:id', async (req, res) => {
+    try {
+        const deleted = await Person.findByIdAndDelete(req.params.id)
+
+        if (!deleted) {
+            return res.status(404).json({
+                error: 'person not found'
+            })
+        } else {
+            res.status(204).end()
+        }
+        res.status(204).end()
+    } catch (err) {
+        res.status(500).json({
+            error: 'server error'
+        })
+    }
 })
 
 const PORT = process.env.PORT 
