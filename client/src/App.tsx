@@ -28,28 +28,39 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: String(persons.length + 1),
     }
-    personService
+
+    const updatePerson = persons.find(person => person.name === newName)
+    if (updatePerson) {
+      window.confirm(`${newName} is already added to phonebook, will modify entry`)
+      const modifyPerson = { ...updatePerson, number: newNumber }
+      personService
+        .update(updatePerson.id, modifyPerson)
+        .then(() => {
+          setErrorMessage('Updated ' + updatePerson.name)
+        })
+    } else {
+      personService
       .create(personObject)
       .then((response: { data: any }) => {
         setNewName('')
         setNewNumber('')
         setPersons(persons.concat(response.data))
-        setErrorMessage('Added '+ response.data.name)
+        setErrorMessage('Added ' + `${personObject.name}`)
       })
+    }
   }
 
-  const handleDelete = (id: any) => {
+  const handleDelete = (id: any, name: any) => {
     personService
       .remove(id)
-      .then((response: { data: any }) => {
-        const updatedPersons = persons.filter((person: any) => person.id !== id)
-        if (updatedPersons) {
-          setPersons(updatedPersons)
-          setErrorMessage('Removed ' + response.data.name)
+      .then(() => {
+        const deletedPerson = persons.filter((person: any) => person.id !== id)
+        if (deletedPerson) {
+          setPersons(deletedPerson)
+          setErrorMessage('Removed ' + name)
         } else {
-          setErrorMessage('Error removing person')
+          setErrorMessage('Error removing ' + name)
         }
       })
   }
@@ -61,13 +72,7 @@ const App = () => {
   }
 
   const handleNameUpdate = (event: any) => {
-    let addedName = event.target.value;
-    const nameAdded = persons.some(person => person.name === addedName);
-    if (!nameAdded) {
-      setNewName(addedName) 
-    } else {
-      alert(`${addedName} already added to phonebook`);
-    }
+    setNewName(event.target.value)
   }
 
   const handleNumberUpdate = (event: any) => {
