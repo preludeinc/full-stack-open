@@ -29,7 +29,7 @@ peopleRouter.post('/', (req, res, next) => {
 
   person.save()
     .then((savedPerson) => {
-      res.status(200).json(savedPerson)
+      res.status(201).json(savedPerson)
     })
     .catch((error) => next(error))
 })
