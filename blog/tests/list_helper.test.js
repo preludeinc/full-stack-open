@@ -1,4 +1,4 @@
-const { test, describe, after, beforeEach, expect } = require('node:test')
+const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/blog_helper')
 
@@ -63,7 +63,7 @@ describe('total likes', () => {
       __v: 0
     },
     {
-      _id: "5a422b3a1b54a676234d17f9",
+      _id: "5a422b3a1b54a676234d17f2",
       title: "Increment",
       author: "James Turnbull",
       url: "https://increment.com/",
