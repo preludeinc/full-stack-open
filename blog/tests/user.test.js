@@ -21,7 +21,7 @@ describe('when there is initially one user in the db', () => {
   })
 })
 
-test('creation fails with proper statuscode and message if username already taken', async () => {
+test('creation fails with proper status code and message if username already taken', async () => {
   const usersAtStart = await helper.usersInDb()
 
   const newUser = {
