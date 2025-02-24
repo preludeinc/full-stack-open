@@ -3,7 +3,7 @@ body{
 }
 
 li {
-    list-style-type: none;
+    list-style-type: circle;
     color: grey;
     padding-top: 3px;
     font-size: 15px;
