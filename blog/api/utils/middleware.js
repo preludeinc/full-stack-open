@@ -29,29 +29,27 @@ const errorHandler = (error, req, res, next) => {
   next(error)
 }
 
-// const tokenExtractor = (req, res, next) => {
-//   const authorization = req.get('authorization')
-//   if (authorization && authorization.startsWith('Bearer ')) {
-//     return authorization.replace('Bearer ', '')
-//   } 
-//   next()
-// }
+const tokenExtractor = (req, res, next) => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    req.token = authorization.replace('Bearer ', '')
+  } 
+  next()
+}
 
-// const userExtractor = async(req, res, next) => {
-//   const token = req.token
-//   const decodedToken = jwt.verify(token, process.env.SECRET)
-//     if (!decodedToken.id) {
-//       return res.status(401).json({ error: 'token invalid' })
-//     }
-//     const user = await User.findById(decodedToken.id)
-//     req.user = user
-//     next()
-// }
+const userExtractor = async(req, res, next) => {
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+  if (decodedToken?.id) {
+    req.user = await User.findById(decodedToken.id)
+  } 
+  next()
+}
+
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  //tokenExtractor,
-  //userExtractor
+  tokenExtractor,
+  userExtractor
 }

@@ -1,18 +1,13 @@
-import Blog from './Blog.jsx'
+import Blog from './Blog.jsx';
 
-const BlogList = ({blogs}) => {
+const BlogList = ({ blogs, user }) => {
   return (
     <ul>
       {blogs.map((blog) => (
-        <Blog key={blog.id} 
-          title={blog.title} 
-          author={blog.author} 
-          url={blog.url} 
-          likes={blog.likes} 
-        />
+        <Blog key={blog.id} blog={blog} user={user} />
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default BlogList
+export default BlogList;

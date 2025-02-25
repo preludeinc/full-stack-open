@@ -4,9 +4,9 @@ body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-li {
-    list-style-type: circle;
-    color: grey;
+li, p {
+    list-style-type: none;
+    color: midnightblue;
     padding-top: 3px;
     font-size: 15px;
 }
@@ -17,8 +17,13 @@ h1 {
     font-style: italic;
 }
 
+h2 {
+    color: navy;
+}
+
 button {
-    padding: 4px 6px;
+    padding: 2px 3px;
+    color: purple;
     text-align: center;
     display: inline-block;
     font-size: 14px;
@@ -28,20 +33,31 @@ button {
 .button {
     background-color: #04AA6D;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 8px;
+    margin: 1px;
 }
 
 .button-cancel {
     background-color: #E7E7E7;
     color: black;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 8px;
+    margin: 1px;
+}
+
+.toggle {
+    margin-left: 0.5rem;
+    background-color: ghostwhite;
+}
+
+.logout {
+    margin-left: 0.5rem;
 }
 
 input {
-    padding: 0.35rem;
-    margin: 0.25rem 0;
+    padding: 0.25rem;
+    margin: 0.2rem 0;
     border: 1px solid;
     border-radius: 4px;
     font-size: 1rem;
@@ -52,7 +68,7 @@ form {
     flex-direction: column;
     margin: 1.25rem auto;
     padding: 1.25rem;
-    border: 1px solid;
+    border: 1px dashed;
     border-radius: 8px;
 }
 
@@ -61,8 +77,8 @@ form div {
 }
 
 form label {
-    font-size: 1rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+    margin: 0 0.25rem 0.3rem 0.25rem;
 }
 
 .notification {
