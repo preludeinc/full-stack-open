@@ -1,40 +1,34 @@
 
 
-import { useState, useEffect } from "react";
-import blogService from '../services/blogs';
+import { useState } from "react";
 
-const BlogForm = ({ setBlogs, setNotification }) => {
+const BlogForm = ({ addBlog, cancelAdd }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [likes, setLikes] = useState(0);
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
-
   const handleBlogChange = async (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
 
     switch (name) {
       case "title":
-        setTitle(value);
-        break;
+        setTitle(value)
+        break
       case "author":
-        setAuthor(value);
-        break;
+        setAuthor(value)
+        break
       case "url":
-        setUrl(value);
-        break;
+        setUrl(value)
+        break
       case "likes":
-        setLikes(Number(value));
-        break;
+        setLikes(Number(value))
+        break
     }
-  };
+  }
 
-  // should this be in parent?
-  const addBlog = async (event) => {
-    event.preventDefault();
+  const handleAddBlog = (event) => {
+    event.preventDefault()
 
     const newBlog = {
       title: title,
@@ -42,29 +36,27 @@ const BlogForm = ({ setBlogs, setNotification }) => {
       url: url,
       likes: likes,
     };
+    addBlog(newBlog);
 
-    try {
-      const blog = await blogService.create(newBlog);
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-      setLikes(0);
-      console.log(`added blog ${newBlog.title}`);
-      setNotification(`new blog ${newBlog.title} by ${newBlog.author} added`);
-      const updatedBlogs = await blogService.getAll();
-      setBlogs(updatedBlogs);
-    } catch (exception) {
-      setNotification(`${exception}`);
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
-    }
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+    setLikes(0);
   };
 
+  const handleCancel = (event) => {
+    event.preventDefault()
+    cancelAdd()
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+    setLikes(0);
+  }
+
   return (
-    <form onSubmit={addBlog}>
+    <form>
       <div>
-        <p>add a new blog entry...</p>
+        <h2>create new blog</h2>
         <div>
           <label>title </label>
           <input name="title" value={title} onChange={handleBlogChange} />
@@ -82,7 +74,8 @@ const BlogForm = ({ setBlogs, setNotification }) => {
           <input name="likes" value={likes} onChange={handleBlogChange} />
         </div>
         <div>
-          <button type="submit">save</button>
+          <button className='button' onClick={handleAddBlog}>create</button>
+          <button className='button-cancel' onClick={handleCancel}>cancel</button>
         </div>
       </div>
     </form>
