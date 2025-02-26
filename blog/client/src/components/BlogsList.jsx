@@ -14,7 +14,7 @@ const BlogList = ({ blogs, user, updateLikes, removeBlog }) => {
         />
       ))}
     </ul>
-  );
-};
+  )
+}
 
-export default BlogList;
+export default BlogList

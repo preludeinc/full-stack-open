@@ -1,24 +1,24 @@
 import { useState } from 'react';
 
 const Blog = ({ blog, updateLikes, removeBlog }) => {
-  const [expand, setExpanded] = useState(false);
+  const [expand, setExpanded] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     backgroundColor: 'ghostwhite',
     marginBottom: 5,
-  };
+  }
 
-  const title = blog.title;
-  const url = blog.url;
-  const likes = blog.likes;
-  const author = blog.author;
-  const blogId = blog.id;
+  const title = blog.title
+  const url = blog.url
+  const likes = blog.likes
+  const author = blog.author
+  const blogId = blog.id
 
   const expandBlog = () => {
     setExpanded(!expand);
-  };
+  }
 
   const handleLikes = () => {
     const updatedBlog = {
@@ -26,9 +26,9 @@ const Blog = ({ blog, updateLikes, removeBlog }) => {
       author: author,
       title: title,
       url: url
-    }  
-    updateLikes(blogId, updatedBlog);
-  };
+    }
+    updateLikes(blogId, updatedBlog)
+  }
 
   const handleRemove = () => {
     removeBlog(blogId, title)
@@ -67,7 +67,7 @@ const Blog = ({ blog, updateLikes, removeBlog }) => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
