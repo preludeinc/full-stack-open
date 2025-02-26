@@ -46,6 +46,8 @@ blogsRouter.delete('/:id', userExtractor, async (req, res) => {
     return res.status(401).json({ error: 'token invalid' })
   }
 
+  const blog = await Blog.findById(req.params.id)
+
   if (blog.user.toString() !== user._id.toString()) {
     return res.status(401).json({ error: 'unauthorized access' })
   } else {

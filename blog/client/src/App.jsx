@@ -55,7 +55,21 @@ const App = () => {
 
   const addBlog = async (newBlog) => {
     try {
-      const addedBlog = await blogService.create(newBlog);
+      const { title, author, url, likes } = newBlog;
+
+      const blogAndUser = {
+        user: {
+          id: user.id,
+          username: user.username,
+          name: user.name,
+        },
+        likes: likes,
+        author: author,
+        title: title,
+        url: url
+      }
+
+      const addedBlog = await blogService.create(blogAndUser, user.token);
       blogFormRef.current.toggleVisibility();
       if (addedBlog) {
         setBlogs((blogs) => [...blogs, addedBlog]);
@@ -71,6 +85,31 @@ const App = () => {
   const cancelAdd = () => {
     blogFormRef.current.toggleVisibility();
   };
+
+  const updateLikes = async (blogId, updatedBlog) => {
+    const { title, author, url, likes } = updatedBlog;
+
+    const formattedBlog = {
+      user: user.id,
+      likes: likes,
+      author: author,
+      title: title,
+      url: url,
+    };
+    const updateBlog = await blogService.update(blogId, formattedBlog);
+    if (updateBlog) {
+      setBlogs(blogs.map((blog) => (blog.id === blogId ? updatedBlog : blog)));
+      handleNotification(`updated blog ${updateBlog.title}`);
+    }
+  };
+
+  const removeBlog = async (blogId, deletedBlog) => {
+    console.log(user.token)
+    const removedBlog = await blogService.remove(blogId, user.token)
+    const updatedBlogs = blogs.filter((blog) => blog.id !== blogId)
+    setBlogs(updatedBlogs)
+    handleNotification(`removed blog ${deletedBlog}`)
+  }
 
   return (
     <div>
@@ -94,7 +133,7 @@ const App = () => {
               <Togglable buttonLabel='new blog' ref={blogFormRef}>
                 <BlogForm addBlog={addBlog} cancelAdd={cancelAdd} />
               </Togglable>
-              <BlogList blogs={blogs} user={user} />
+              <BlogList blogs={blogs} user={user} updateLikes={updateLikes} removeBlog={removeBlog} />
             </>
           )}
         </div>

@@ -1,10 +1,17 @@
 import Blog from './Blog.jsx';
 
-const BlogList = ({ blogs, user }) => {
+const BlogList = ({ blogs, user, updateLikes, removeBlog }) => {
+  const sortedBlogs = blogs.sort((a, b) => a.likes - b.likes)
   return (
     <ul>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} user={user} />
+      {sortedBlogs.map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user}
+          updateLikes={updateLikes}
+          removeBlog={removeBlog}
+        />
       ))}
     </ul>
   );

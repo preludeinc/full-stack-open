@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, updateLikes, removeBlog }) => {
   const [expand, setExpanded] = useState(false);
 
   const blogStyle = {
@@ -14,15 +14,25 @@ const Blog = ({ blog, user }) => {
   const url = blog.url;
   const likes = blog.likes;
   const author = blog.author;
-  //console.log(user.id)
-  //console.log(user.username)
-  //console.log(user.name)
+  const blogId = blog.id;
 
   const expandBlog = () => {
     setExpanded(!expand);
   };
 
-  const handleLikes = () => {};
+  const handleLikes = () => {
+    const updatedBlog = {
+      likes: Number(likes + 1),
+      author: author,
+      title: title,
+      url: url
+    }  
+    updateLikes(blogId, updatedBlog);
+  };
+
+  const handleRemove = () => {
+    removeBlog(blogId, title)
+  }
 
   return (
     <div style={blogStyle}>
@@ -42,6 +52,9 @@ const Blog = ({ blog, user }) => {
             </button>
           </p>
           <p>{author}</p>
+          <button className='remove' onClick={handleRemove}>
+            remove
+          </button>
         </>
       ) : (
         <>

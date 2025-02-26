@@ -4,10 +4,9 @@ const BlogForm = ({ addBlog, cancelAdd }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
-  const [user, setUser] = useState(null);
-  //const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState(0);
 
-  const handleBlogChange = async (event) => {
+  const handleBlogChange = async(event) => {
     const { name, value } = event.target;
 
     switch (name) {
@@ -20,9 +19,9 @@ const BlogForm = ({ addBlog, cancelAdd }) => {
       case 'url':
         setUrl(value);
         break;
-      // case 'likes':
-      //   setLikes(Number(value));
-      //   break;
+      case 'likes':
+        setLikes(Number(value));
+        break;
     }
   };
 
@@ -35,21 +34,21 @@ const BlogForm = ({ addBlog, cancelAdd }) => {
       url: url,
     };
     addBlog(newBlog);
-
-    setTitle('');
-    setAuthor('');
-    setUrl('');
-    //setLikes(0);
+    clearData();
   };
 
   const handleCancel = (event) => {
     event.preventDefault();
     cancelAdd();
+    clearData();
+  };
+
+  const clearData = () => {
     setTitle('');
     setAuthor('');
     setUrl('');
-    //setLikes(0);
-  };
+    setLikes(0);
+  }
 
   return (
     <form>
@@ -67,10 +66,10 @@ const BlogForm = ({ addBlog, cancelAdd }) => {
           <label>url </label>
           <input name='url' value={url} onChange={handleBlogChange} />
         </div>
-        {/* <div>
+        <div>
           <label>likes </label>
           <input name='likes' value={likes} onChange={handleBlogChange} />
-        </div> */}
+        </div>
         <div>
           <button className='button' onClick={handleAddBlog}>
             create
