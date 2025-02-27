@@ -2,5 +2,6 @@
 
 Exercises from Full Stack Open
 
-Phonebook: Part(s) One to Three
-Blog: Part(s) Four and Five
+- Parts One to Three - Phonebook
+- Parts Four & Five - Blog
+- Part Six - Unicafe - Redux
