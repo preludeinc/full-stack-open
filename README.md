@@ -2,6 +2,6 @@
 
 Exercises from Full Stack Open
 
-- Parts One to Three - Phonebook
-- Parts Four & Five - Blog
-- Part Six - Unicafe - Redux
+- Parts One to Three - phonebook
+- Parts Four & Five - blog
+- Part Six - unicafe-redux, redux-anecdotes
