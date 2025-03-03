@@ -1,0 +1,24 @@
+{
+  "anecdotes": [
+    {
+      "content": "Be yourself, everyone else is already taken",
+      "votes": 16,
+      "id": "1"
+    },
+    {
+      "content": "You're braver than you believe, stronger than you seem, and smarter than you think.",
+      "votes": 15,
+      "id": "2"
+    },
+    {
+      "id": "3",
+      "content": "Those who don’t believe in magic will never find it.",
+      "votes": 15
+    },
+    {
+      "id": "4",
+      "content": "This suspense is terrible. I hope it will last.",
+      "votes": 15
+    }
+  ]
+}
