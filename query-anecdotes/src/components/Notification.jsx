@@ -1,4 +1,8 @@
+import { useNotifications } from "../context/NotificationContext"
+
 const Notification = () => {
+  const notification = useNotifications()
+
   const style = {
     border: 'solid',
     padding: 10,
@@ -6,13 +10,15 @@ const Notification = () => {
     marginBottom: 5
   }
   
-  if (true) return null
-
-  return (
-    <div style={style}>
-      
-    </div>
-  )
+  if (notification.length == 0 || notification === undefined) return null
+  else {
+    const content = notification[notification.length - 1].content
+    return (
+      <div style={style}>
+        {content}
+      </div>
+    )
+  }
 }
 
 export default Notification
