@@ -12,7 +12,7 @@ const AnecdoteForm = () => {
       queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
     },
     onError: () => {
-      //dispatch({ content: `anecdote is too short, must have length of five characters or more`, id })
+      dispatch({ type: 'ERROR', payload: `anecdote is too short, must have length of five characters or more`})
     }
   })
 
@@ -25,6 +25,7 @@ const AnecdoteForm = () => {
       newAnecdoteMutation.mutate({ content })
       event.target.anecdote.value = ''
     } 
+    window.confirm(`${content} is too short, must have length of five or more`)
 }
 
   return (

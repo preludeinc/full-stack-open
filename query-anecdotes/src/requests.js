@@ -8,13 +8,18 @@ export const getAnecdotes = async () => {
 }
 
 export const createAnecdote = async (newAnecdote) => {
-  let votes = newAnecdote.votes || 0
-  const formattedAnecdote = {
-    content: newAnecdote.content,
-    id: String(Math.floor(Math.random() * 10000)),
-    votes: votes
+  try {
+    let votes = newAnecdote.votes || 0
+    const formattedAnecdote = {
+      content: newAnecdote.content,
+      id: String(Math.floor(Math.random() * 10000)),
+      votes: votes
+    }
+    const response = await axios.post(baseUrl, formattedAnecdote)
+    return response.data
+  } catch (error) {
+    return error.message
   }
-  await axios.post(baseUrl, formattedAnecdote)
 }
 
 export const updateAnecdote = async (updatedAnecdote) => {

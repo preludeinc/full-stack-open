@@ -2,10 +2,10 @@ import { createContext, useReducer, useContext } from 'react'
 
 const notificationReducer = (state, action) => {
   switch (action.type) {
-    case "NEW":
+    case 'NEW':
       const { content, id } = action.payload
       return [...state, { content, id }]
-    case "REFRESH":
+    case 'REFRESH':
       return [...state, state => state.id !== id]
     default:
       return state
@@ -33,9 +33,9 @@ export const useNotificationDispatch = () => {
   const notificationAndDispatch = useContext(NotificationContext)
   const dispatch = notificationAndDispatch[1]
   return (payload) => {
-    dispatch({ type: "NEW", payload })
+    dispatch({ type: 'NEW', payload })
     setTimeout(() => {
-      dispatch({ type: "REFRESH" })
+      dispatch({ type: 'REFRESH' })
     }, 5000)
   }
 }
