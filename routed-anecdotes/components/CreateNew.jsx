@@ -1,4 +1,5 @@
 import { useField } from '../hooks/useField'
+import { Alert, Box, Button, InputLabel, TextField } from '@mui/material'
 
 export const CreateNew = ({ addNew }) => {
   const contentInput = useField('text')
@@ -11,6 +12,7 @@ export const CreateNew = ({ addNew }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(content)
     addNew({
       content: content.value,
       author: author.value,
@@ -27,24 +29,24 @@ export const CreateNew = ({ addNew }) => {
   }
 
   return (
-    <div>
+    <Box sx={{ m: 2 }}>
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
-          <input {...content} />
+          <InputLabel>content</InputLabel>
+          <TextField label='content' {...content} />
         </div>
         <div>
-          author
-          <input {...author} />
+          <InputLabel>author</InputLabel>
+          <TextField label='author' {...author} />
         </div>
         <div>
-          url for more info
-          <input {...info} />
+          <InputLabel>url for more info </InputLabel>
+          <TextField label='info' {...info} />
         </div>
-        <button onClick={handleSubmit}>create</button>
-        <button onClick={handleReset}>reset</button>
+        <Button variant='contained' color='secondary' onClick={handleSubmit}>create</Button>
+        <Button variant='contained' color='secondary' onClick={handleReset}>reset</Button>
       </form>
-    </div>
+    </Box>
   )
 }
