@@ -17,11 +17,11 @@ let authors = [
     id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
     born: 1821
   },
-  { 
+  {
     name: 'Joshua Kerievsky', // birth-year not known
     id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
   },
-  { 
+  {
     name: 'Sandi Metz', // birth-year not known
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
@@ -55,7 +55,7 @@ let books = [
     author: 'Joshua Kerievsky',
     id: "afa5de01-344d-11e9-a414-719c6709cf3e",
     genres: ['refactoring', 'patterns']
-  },  
+  },
   {
     title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
     published: 2012,
@@ -81,34 +81,116 @@ let books = [
 
 const typeDefs = `
   type Query {
-    bookCount: Number!
-    authorCount: Number!
+    bookCount: Int!
+    authorCount: Int!
+    allBooks(author: String, genre: String): [Book!]!
+    allAuthors: [Author!]!
+  }
+    
+  type Author {
+    name: String!
+    bookCount: Int
+    id: ID!
+    born: Int
   }
 
   type Book {
     title: String!
-    published: Number!
+    published: Int!
     author: String!
     id: String!
-    genres: [String!]
+    genres: [String!]!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book!
+  }
+
+  type Mutation {
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 `
 
 const resolvers = {
   Query: {
     bookCount: () => books.length,
-    authorCount: () => authors.length
-    // authorCount: (root, args) => 
-    //     books.find(a => a.name === args.name) 
+    authorCount: () => authors.length,
+    allBooks: (root, args) => {
+      args.author
+        ? (books = books.filter((book) => book.author === args.author))
+        : books;
+      args.genre
+        ? (books = books.filter((book) => book.genres.includes(args.genre)))
+        : books;
+      return books;
+    },
+    allAuthors: (root, args) => {
+      return authors.map((author) => ({
+        name: author.name,
+        born: author.born,
+        id: author.id,
+        bookCount: books.filter((book) => book.author.name === args.name)
+          .length,
+      }));
+    },
   },
   Book: {
-    title: (root) => root.name,
+    title: (root) => root.title,
     published: (root) => root.published,
     author: (root) => root.author,
     id: (root) => root.id,
-    genres: (root) => root.genres
-  }
-}
+    genres: (root) => root.genres,
+  },
+  Author: {
+    name: (root) => root.name,
+    id: (root) => root.id,
+    born: (root) => root.born,
+  },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const author = authors.find((a) => a.name === args.author);
+      if (!author) {
+        const addAuthor = {
+          name: args.author,
+          born: null,
+          bookCount: 1,
+        }
+      }
+      // how to save this?
+
+      const updatedBook = {
+        title: args.title,
+        author: args.author,
+        published: args.published,
+        genres: args.genres,
+      };
+      books = books.map((b) => (b.title === args.title ? updatedBook : b));
+      return updatedBook;
+    },
+    editAuthor: (root, args) => {
+      const author = authors.find((a) => a.name === args.name);
+      if (!author) {
+        return null
+      }
+
+      const updatedAuthor = {
+        ...author,
+        name: args.name,
+        born: args.setBornTo
+      }
+      return updatedAuthor
+    }
+  },
+};
 
 const server = new ApolloServer({
   typeDefs,
@@ -118,5 +200,5 @@ const server = new ApolloServer({
 startStandaloneServer(server, {
   listen: { port: 4000 },
 }).then(({ url }) => {
-  console.log(`Server ready at ${url}`)
+  console.log(`Server ready at ${url}`);
 })
