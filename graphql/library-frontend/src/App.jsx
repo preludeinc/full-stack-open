@@ -5,11 +5,6 @@ import NewBook from "./components/NewBook";
 
 const App = () => {
   const [page, setPage] = useState("authors");
-  const authors = useQuery(ALL_AUTHORS)
-
-  if (authors.loading) {
-    return <div>loading...</div>
-  }
 
   return (
     <div>

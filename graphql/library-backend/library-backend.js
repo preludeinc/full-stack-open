@@ -1,83 +1,6 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-
-let authors = [
-  {
-    name: 'Robert Martin',
-    id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
-    born: 1952,
-  },
-  {
-    name: 'Martin Fowler',
-    id: "afa5b6f0-344d-11e9-a414-719c6709cf3e",
-    born: 1963
-  },
-  {
-    name: 'Fyodor Dostoevsky',
-    id: "afa5b6f1-344d-11e9-a414-719c6709cf3e",
-    born: 1821
-  },
-  {
-    name: 'Joshua Kerievsky', // birth-year not known
-    id: "afa5b6f2-344d-11e9-a414-719c6709cf3e",
-  },
-  {
-    name: 'Sandi Metz', // birth-year not known
-    id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
-  },
-]
-
-let books = [
-  {
-    title: 'Clean Code',
-    published: 2008,
-    author: 'Robert Martin',
-    id: "afa5b6f4-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring']
-  },
-  {
-    title: 'Agile software development',
-    published: 2002,
-    author: 'Robert Martin',
-    id: "afa5b6f5-344d-11e9-a414-719c6709cf3e",
-    genres: ['agile', 'patterns', 'design']
-  },
-  {
-    title: 'Refactoring, edition 2',
-    published: 2018,
-    author: 'Martin Fowler',
-    id: "afa5de00-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring']
-  },
-  {
-    title: 'Refactoring to patterns',
-    published: 2008,
-    author: 'Joshua Kerievsky',
-    id: "afa5de01-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring', 'patterns']
-  },
-  {
-    title: 'Practical Object-Oriented Design, An Agile Primer Using Ruby',
-    published: 2012,
-    author: 'Sandi Metz',
-    id: "afa5de02-344d-11e9-a414-719c6709cf3e",
-    genres: ['refactoring', 'design']
-  },
-  {
-    title: 'Crime and punishment',
-    published: 1866,
-    author: 'Fyodor Dostoevsky',
-    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
-    genres: ['classic', 'crime']
-  },
-  {
-    title: 'Demons',
-    published: 1872,
-    author: 'Fyodor Dostoevsky',
-    id: "afa5de04-344d-11e9-a414-719c6709cf3e",
-    genres: ['classic', 'revolution']
-  },
-]
+let { books, authors } = require('./data') 
 
 const typeDefs = `
   type Query {
@@ -97,7 +20,7 @@ const typeDefs = `
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author
     id: String!
     genres: [String!]!
   }
@@ -137,7 +60,7 @@ const resolvers = {
         name: author.name,
         born: author.born,
         id: author.id,
-        bookCount: books.filter((book) => book.author.name === args.name)
+        bookCount: books.filter((book) => book.author === args.name)
           .length,
       }));
     },
@@ -157,15 +80,17 @@ const resolvers = {
 
   Mutation: {
     addBook: (root, args) => {
-      const author = authors.find((a) => a.name === args.author);
+      author = authors.find((a) => a.name === args.author);
       if (!author) {
         const addAuthor = {
           name: args.author,
           born: null,
           bookCount: 1,
         }
+        authors.push(addAuthor)
+      } else {
+        author.bookCount += 1
       }
-      // how to save this?
 
       const updatedBook = {
         title: args.title,
@@ -173,11 +98,17 @@ const resolvers = {
         published: args.published,
         genres: args.genres,
       };
-      books = books.map((b) => (b.title === args.title ? updatedBook : b));
+      existingBook = books.find((b) => b.title === args.title)
+
+      if (existingBook) {
+        books = books.map((b) => (b.title === args.title ? updatedBook : b));
+      } else {
+        books.push(updatedBook)
+      }
       return updatedBook;
     },
     editAuthor: (root, args) => {
-      const author = authors.find((a) => a.name === args.name);
+      let author = authors.find((a) => a.name === args.name);
       if (!author) {
         return null
       }
@@ -187,6 +118,7 @@ const resolvers = {
         name: args.name,
         born: args.setBornTo
       }
+      authors = authors.map((a) => (a.name === args.name ? updatedAuthor : a))
       return updatedAuthor
     }
   },
