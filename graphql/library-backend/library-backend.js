@@ -2,45 +2,39 @@ const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 let { books, authors } = require('./data') 
 
-const typeDefs = `
-  type Query {
-    bookCount: Int!
-    authorCount: Int!
-    allBooks(author: String, genre: String): [Book!]!
-    allAuthors: [Author!]!
-  }
+// const typeDefs = `
+//   type Query {
+//     bookCount: Int!
+//     authorCount: Int!
+//     allBooks(author: String, genre: String): [Book!]!
+//     allAuthors: [Author!]!
+//   }
     
-  type Author {
-    name: String!
-    bookCount: Int
-    id: ID!
-    born: Int
-  }
+//   type Author {
+//     name: String!
+//     bookCount: Int
+//     id: ID!
+//     born: Int
+//   }
 
-  type Book {
-    title: String!
-    published: Int!
-    author: Author
-    id: String!
-    genres: [String!]!
-  }
+//   type Book {
+//     title: String!
+//     published: Int!
+//     author: Author
+//     id: String!
+//     genres: [String!]!
+//   }
 
-  type Mutation {
-    addBook(
-      title: String!
-      author: String!
-      published: Int!
-      genres: [String!]!
-    ): Book!
-  }
-
-  type Mutation {
-    editAuthor(
-      name: String!
-      setBornTo: Int!
-    ): Author
-  }
-`
+//   type Mutation {
+//     addBook(
+//       title: String!
+//       author: String!
+//       published: Int!
+//       genres: [String!]!
+//     ): Book!
+//     editAuthor(name: String!, setBornTo: Int!): Author
+//   }
+// `
 
 const resolvers = {
   Query: {

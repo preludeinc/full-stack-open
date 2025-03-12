@@ -2,6 +2,7 @@
   "dependencies": {
     "@apollo/server": "^4.11.3",
     "dotenv": "^16.4.7",
-    "mongoose": "^8.12.1"
+    "mongoose": "^8.12.1",
+    "mongoose-unique-validator": "^4.0.1"
   }
 }
