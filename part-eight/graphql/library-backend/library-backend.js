@@ -1,5 +1,5 @@
-const { ApolloServer } = require('@apollo/server')
-const { startStandaloneServer } = require('@apollo/server/standalone')
+//const { ApolloServer } = require('@apollo/server')
+//const { startStandaloneServer } = require('@apollo/server/standalone')
 let { books, authors } = require('./data') 
 
 // const typeDefs = `
@@ -118,13 +118,13 @@ const resolvers = {
   },
 };
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
+// const server = new ApolloServer({
+//   typeDefs,
+//   resolvers,
+// })
 
-startStandaloneServer(server, {
-  listen: { port: 4000 },
-}).then(({ url }) => {
-  console.log(`Server ready at ${url}`);
-})
+// startStandaloneServer(server, {
+//   listen: { port: 4000 },
+// }).then(({ url }) => {
+//   console.log(`Server ready at ${url}`);
+// })

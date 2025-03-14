@@ -14,6 +14,6 @@ const author = new mongoose.Schema({
   },
 })
 
-schema.plugin(uniqueValidator)
+author.plugin(uniqueValidator)
 
 module.exports = mongoose.model('Author', author)
